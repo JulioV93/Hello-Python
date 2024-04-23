@@ -80,6 +80,9 @@ print(my_new_list)
 my_new_list.sort()
 print(my_new_list)
 
+#Permite realizar sublistas, esto imprimeendo un rango dado conociendo los indices
+print(my_new_list[1:3])
+
 #Python al no se ru lenguaje fuertemente tipado, permite el cambio de tipo de dato
 my_list = "Hola Python"
 print(my_list)
