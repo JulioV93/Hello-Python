@@ -2,7 +2,7 @@
 
 #El archivo 10_functions tira error por la nomenclatura del nombre dle fichero, por lo que se copio y creo uno nuevo.
 
-#Manera de llamar otros ficheros.
+#Manera de llamar otros ficheros o modulos.
 import my_module
 
 my_module.sumValue(1,2,3)

@@ -1,0 +1,6 @@
+Mi nombre es Julio
+Mi apellido es Machado
+Mi edad es 30
+Mi lenguaje favorito es Python
+Aunque también me gusta PHP
+Y Java
