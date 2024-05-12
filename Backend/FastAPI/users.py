@@ -42,7 +42,7 @@ async def users():
 #http://127.0.0.1:8000/user/1
 @app.get("/user/{id_usuario}")
 async def user(id_usuario: int):
-        return search_users(id_usuario)
+    return search_users(id_usuario)
 
 #2 - Query
 #Pasar por query es pasar todos los parametros despues del ? y se concatena con & cada parametro
