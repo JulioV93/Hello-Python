@@ -10,6 +10,10 @@ print(app)
 
 #uvicorn es un modulo de servidor que disponibiliza FastAPI, trabaja en 127.0.0.1:8000
 
+#FastAPI tiene integrado Swagger para generar la documentación de las APIs de manera automatica. http://127.0.0.1:8000/docs
+
+#FastAPI tiene integrado Redoc para generar la documentación de las APIs de manera automatica. http://127.0.0.1:8000/redoc
+
 @app.get("/")
 async def root():
     return "¡Hola FastAPI!"
