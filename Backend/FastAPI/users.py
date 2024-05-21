@@ -6,7 +6,7 @@ app = FastAPI()
 # Entidad user
 
 #BaseModel da la capacidad de crear una entidad.
-
+#Para las API se deben hacer todas las funciones asincronas, para que se siga ejecutando las funciones y enviar mas peticiones al servidor.
 class User(BaseModel):
     id_usuario: int
     name: str
@@ -15,10 +15,10 @@ class User(BaseModel):
     age: int
     
 users_list = [
-        User(id_usuario=1,name="Julio",surname="Machado",url="https://github.com/JulioV93",age=30),
-        User(id_usuario=2,name="Alejandro",surname="Vasquez",url="https://github.com/JulioV93",age=34),
-        User(id_usuario=3,name="Vanessa",surname="Moncayo",url="https://github.com/JulioV93",age=28)
-        ]
+    User(id_usuario=1,name="Julio",surname="Machado",url="https://github.com/JulioV93",age=30),
+    User(id_usuario=2,name="Alejandro",surname="Vasquez",url="https://github.com/JulioV93",age=34),
+    User(id_usuario=3,name="Vanessa",surname="Moncayo",url="https://github.com/JulioV93",age=28)
+    ]
 
 @app.get("/usersjson")
 async def usersjson():
@@ -50,7 +50,45 @@ async def user(id_usuario: int):
 @app.get("/user/")
 async def user(id_usuario: int):
     return search_users(id_usuario)
-    
+
+#Manera de utilizar POST
+#Se pasa un JSON en el body
+@app.post("/user/")
+async def user(user: User):
+    if type(search_users(user.id_usuario)) == User:
+        return {"error": "El usuario ya existe"}
+    else:
+        users_list.append(user)
+        return user
+
+#Manera de utilizar PUT
+#Se pasa un JSON en el body
+@app.put("/user/")
+async def user(user: User):
+    found = False
+    for index, saved_user in enumerate(users_list):
+        if saved_user.id_usuario == user.id_usuario:
+            users_list[index] = user
+            found = True
+            
+    if not found:
+        return {"error": "No se ha actualizado el usuario especificado."}
+    else:
+        return user
+
+#Manera de utilizar DELETE
+#Se utiliza a traves de la URL
+@app.delete("/user/{id_usuario}")
+async def user(id_usuario: int):
+    found = False
+    for index, saved_user in enumerate(users_list):
+        if saved_user.id_usuario == id_usuario:
+            del users_list[index]
+            found = True 
+
+    if not found:
+        return {"error": "No se ha eliminado el usuario especificado."}
+
 def search_users(id_usuario: int):
     users = filter(lambda user: user.id_usuario == id_usuario, users_list)
     try:
