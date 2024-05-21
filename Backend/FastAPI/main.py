@@ -1,6 +1,16 @@
+#Instalar FastAPI: pip install "fastapi[all]"
+
 from fastapi import FastAPI
+from routers import products, users
+
+#Se llama la funcion especifica del modulo del Framework
 
 app = FastAPI()
+
+#Routers
+
+app.include_router(products.router)
+app.include_router(users.router)
 
 print(app)
 

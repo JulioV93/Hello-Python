@@ -1,8 +1,8 @@
 #Modulos a importar del framework
-from fastapi import FastAPI, HTTPException
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-app = FastAPI()
+router = APIRouter(tags=["users"])
 
 # Entidad user
 
@@ -21,18 +21,18 @@ users_list = [
     User(id_usuario=3,name="Vanessa",surname="Moncayo",url="https://github.com/JulioV93",age=28)
     ]
 
-@app.get("/usersjson")
+@router.get("/usersjson")
 async def usersjson():
     return [{"name": "Julio", "surname": "Machado", "url": "https://github.com/JulioV93", "age": 30},
             {"name": "Alejandro", "surname": "Vasquez", "url": "https://github.com/AlejandroV93", "age": 34},
             {"name": "vanessa", "surname": "Moncayo", "url": "https://github.com/VanessaV93", "age": 28}]
 
 #Al usar BaseModel como constructor, se indica cual dato es cada uno para que no exista confusión interna, la clase User esta replicando el comportamiento de BaseModel
-@app.get("/usersclass")
+@router.get("/usersclass")
 async def usersclass():
     return User(id_usuario=1,name="Julio",surname="Machado",url="https://github.com/JulioV93",age=30)
 
-@app.get("/users")
+@router.get("/users")
 async def users():
     return users_list
 
@@ -41,14 +41,14 @@ async def users():
 #1 - PATH
 #Se usa el path o ruta de la url para pasar parametros y poder obtener los datos especificos.
 #http://127.0.0.1:8000/user/1
-@app.get("/user/{id_usuario}")
+@router.get("/user/{id_usuario}")
 async def user(id_usuario: int):
     return search_users(id_usuario)
 
 #2 - Query
 #Pasar por query es pasar todos los parametros despues del ? y se concatena con & cada parametro
 #http://127.0.0.1:8000/userquery/?id_usuario=4&name=Julio
-@app.get("/user/")
+@router.get("/user/")
 async def user(id_usuario: int):
     return search_users(id_usuario)
 
@@ -56,18 +56,18 @@ async def user(id_usuario: int):
 #Se pasa un JSON en el body
 #Manejo de codigos de error HTTP
 #Manejo de muestra de respuesta en documentación, response_model
-@app.post("/user/", response_model=User, status_code=201)
+@router.post("/user/", response_model=User, status_code=201)
 async def user(user: User):
     if type(search_users(user.id_usuario)) == User:
         #raise lanza la excepción HTTP, se usa en vez del return
         raise HTTPException(status_code=404, detail="El usuario ya existe")
     else:
-        users_list.append(user)
+        users_list.routerend(user)
         return user
 
 #Manera de utilizar PUT
 #Se pasa un JSON en el body
-@app.put("/user/")
+@router.put("/user/")
 async def user(user: User):
     found = False
     for index, saved_user in enumerate(users_list):
@@ -82,7 +82,7 @@ async def user(user: User):
 
 #Manera de utilizar DELETE
 #Se utiliza a traves de la URL
-@app.delete("/user/{id_usuario}")
+@router.delete("/user/{id_usuario}")
 async def user(id_usuario: int):
     found = False
     for index, saved_user in enumerate(users_list):
